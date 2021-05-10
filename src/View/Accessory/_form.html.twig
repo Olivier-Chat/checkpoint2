@@ -2,10 +2,17 @@
     <div class="form-group">
         <label for="name">Accessory name</label>
         <input type="text" name="name" id="name">
+        {% for error in errors.name %}
+        <p>{{ error }}</p>
+        {% endfor %}
+
     </div>
     <div class="form-group">
         <label for="url">Accessory image URL</label>
         <input type="url" name="url" id="url">
+        {% for error in errors.url %}
+        <p>{{ error }}</p>
+        {% endfor %}
     </div>
     <div class="form-btn">
     <button class="btn primary-btn">Create this accessory</button>

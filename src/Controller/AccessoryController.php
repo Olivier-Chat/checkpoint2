@@ -1,6 +1,8 @@
 <?php
 namespace App\Controller;
 
+use App\Service\FormValidator;
+
 /**
  * Class AccessoryController
  *
@@ -17,11 +19,19 @@ class AccessoryController extends AbstractController
      */
     public function add()
     {
+        $errors = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            //TODO Add your code here to create a new accessory
-            header('Location:/accessory/list');
+            $formValidator = new FormValidator($_POST);
+
+            $formValidator->clean();
+            $formValidator->checkString($formValidator->getPost()['name'], 'name');
+            $formValidator->checkUrl($formValidator->getPost()['url'], 'url');
+            $errors = $formValidator->getErrors();
+            if (empty($errors)) {
+                header('Location:/accessory/list');
+            }
         }
-        return $this->twig->render('Accessory/add.html.twig');
+        return $this->twig->render('Accessory/add.html.twig', ['errors'=>$errors]);
     }
 
     /**
