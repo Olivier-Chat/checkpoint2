@@ -27,7 +27,6 @@ class CupcakeManager extends AbstractManager
     public function selectAll(string $orderBy = '', string $direction = 'ASC'): array
     {
         $query = self::SELECT_QUERY;
-        $query .= ' JOIN accessory a ON c.accessory_id = a.id';
         if ($orderBy) {
             $query .= ' ORDER BY ' . $orderBy . ' ' . $direction;
         }
