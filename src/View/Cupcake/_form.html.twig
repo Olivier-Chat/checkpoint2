@@ -2,23 +2,37 @@
     <div class="form-group">
         <label for="name">Cupcake name</label>
         <input type="text" name="name" id="name">
+        {% for error in errors.name %}
+            <p>{{ error }}</p>
+        {% endfor %}
     </div>
     <div class="form-group">
         <label for="color1">Color first cream</label>
         <input type="color" name="color1" id="color1">
+        {% for error in errors.color1 %}
+            <p>{{ error }}</p>
+        {% endfor %}
     </div>
     <div class="form-group">
         <label for="color2">Color second cream</label>
         <input type="color" name="color2" id="color2">
+        {% for error in errors.color2 %}
+            <p>{{ error }}</p>
+        {% endfor %}
     </div>
     <div class="form-group">
         <label for="color3">Color third cream</label>
         <input type="color" name="color3" id="color3">
+        {% for error in errors.color3 %}
+            <p>{{ error }}</p>
+        {% endfor %}
     </div>
     <div class="form-group">
         <label for="accessory">Accessory</label>
         <select name="accessory" id="accessory">
-            {# TODO Add accessories options here #}
+            {% for accessory in accessories %}
+            <option value="{{ accessory.id }}">{{accessory.name}}</option>
+            {% endfor %}
         </select>
 
     </div>

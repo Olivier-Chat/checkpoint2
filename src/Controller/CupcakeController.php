@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Service\FormValidator;
+
 /**
  * Class CupcakeController
  *
@@ -18,12 +20,23 @@ class CupcakeController extends AbstractController
      */
     public function add()
     {
+        $errors=[];
+        $accessories = $this->accessoryManager->selectAll();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            //TODO Add your code here to create a new cupcake
-            header('Location:/cupcake/list');
+            $formValidator = new FormValidator($_POST);
+            $formValidator->clean();
+            $formValidator->checkString($formValidator->getPost()['name'], 'name');
+            $formValidator->checkString($formValidator->getPost()['color1'], 'color1', FormValidator::COLOR_LENGTH_MAX);
+            $formValidator->checkString($formValidator->getPost()['color2'], 'color2', FormValidator::COLOR_LENGTH_MAX);
+            $formValidator->checkString($formValidator->getPost()['color3'], 'color3', FormValidator::COLOR_LENGTH_MAX);
+            $formValidator->checkInt('accessory');
+            $errors = $formValidator->getErrors();
+            if (empty($errors)) {
+                $this->cupcakeManager->add($formValidator->getPost());
+                header('Location:/cupcake/list');
+            }
         }
-        //TODO retrieve all accessories for the select options
-        return $this->twig->render('Cupcake/add.html.twig');
+        return $this->twig->render('Cupcake/add.html.twig', ['accessories' => $accessories,'errors' => $errors ]);
     }
 
     /**

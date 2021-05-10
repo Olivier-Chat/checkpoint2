@@ -7,10 +7,10 @@ class FormValidator
 {
     protected array $post;
     protected array $errors = [];
-    const NAME_LENGTH_MAX = 255;
-    const URL_LENGTH_MAX = 255;
-    const COLOR_LENGTH_MAX = 7;
-    const MIN_LENGTH = 2;
+    public const NAME_LENGTH_MAX = 255;
+    public const URL_LENGTH_MAX = 255;
+    public const COLOR_LENGTH_MAX = 7;
+    public const MIN_LENGTH = 2;
 
     public function __construct($post)
     {
@@ -64,5 +64,10 @@ class FormValidator
         if (!filter_var($input, FILTER_VALIDATE_URL)) {
             $this->errors[$inputName]['url'] = "Ceci n'est pas une URL valide";
         }
+    }
+
+    public function checkInt(string $inputName)
+    {
+        $this->post[$inputName] = (int)$this->post[$inputName];
     }
 }

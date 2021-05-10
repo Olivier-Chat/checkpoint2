@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Model\AccessoryManager;
 use App\Service\FormValidator;
 
 /**
@@ -28,6 +29,7 @@ class AccessoryController extends AbstractController
             $formValidator->checkUrl($formValidator->getPost()['url'], 'url');
             $errors = $formValidator->getErrors();
             if (empty($errors)) {
+                $this->accessoryManager->add($formValidator->getPost());
                 header('Location:/accessory/list');
             }
         }
@@ -42,7 +44,7 @@ class AccessoryController extends AbstractController
      */
     public function list()
     {
-        //TODO Add your code here to retrieve all accessories
-        return $this->twig->render('Accessory/list.html.twig');
+        $accesories = $this->accessoryManager->selectAll();
+        return $this->twig->render('Accessory/list.html.twig', ['accessories'=>$accesories]);
     }
 }

@@ -10,6 +10,8 @@
 
 namespace App\Controller;
 
+use App\Model\AccessoryManager;
+use App\Model\CupcakeManager;
 use App\Service\FormValidator;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
@@ -21,6 +23,8 @@ abstract class AbstractController
      * @var Environment
      */
     protected Environment $twig;
+    protected AccessoryManager $accessoryManager;
+    protected CupcakeManager $cupcakeManager;
 
     /**
      *  Initializes this class.
@@ -28,6 +32,8 @@ abstract class AbstractController
     public function __construct()
     {
         $loader = new FilesystemLoader(APP_VIEW_PATH);
+        $this->accessoryManager = new AccessoryManager();
+        $this->cupcakeManager = new CupcakeManager();
         $this->twig = new Environment(
             $loader,
             [
