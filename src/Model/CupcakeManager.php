@@ -6,6 +6,10 @@ namespace App\Model;
 class CupcakeManager extends AbstractManager
 {
     public const TABLE = 'cupcake';
+    public const SELECT_QUERY = '
+                SELECT c.id, c.name AS "cupcake_name", c.color1, c.color2, c.color3, c.created_at, a.name 
+                AS  "accessory_name" FROM cupcake c
+                JOIN accessory a ON c.accessory_id = a.id';
 
     public function add(array $cupcakeProperties): int
     {
@@ -22,13 +26,20 @@ class CupcakeManager extends AbstractManager
     }
     public function selectAll(string $orderBy = '', string $direction = 'ASC'): array
     {
-        $query = 'SELECT c.id, c.name AS "cupcake_name", c.color1, c.color2, c.color3, c.created_at, a.name 
-                AS  "accessory_name" FROM cupcake c';
+        $query = self::SELECT_QUERY;
         $query .= ' JOIN accessory a ON c.accessory_id = a.id';
         if ($orderBy) {
             $query .= ' ORDER BY ' . $orderBy . ' ' . $direction;
         }
 
         return $this->pdo->query($query)->fetchAll();
+    }
+    public function selectOneById(int $id)
+    {
+        $query = self::SELECT_QUERY . " WHERE c.id = :id";
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue('id', $id, \PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetch();
     }
 }

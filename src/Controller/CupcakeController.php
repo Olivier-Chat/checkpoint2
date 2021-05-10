@@ -32,7 +32,6 @@ class CupcakeController extends AbstractController
             $formValidator->checkInt('accessory');
             $errors = $formValidator->getErrors();
             if (empty($errors)) {
-                $this->cupcakeManager->add($formValidator->getPost());
                 header('Location:/cupcake/list');
             }
         }
@@ -49,5 +48,10 @@ class CupcakeController extends AbstractController
     {
         $cupcakes = $this->cupcakeManager->selectAll('id', 'DESC');
         return $this->twig->render('Cupcake/list.html.twig', ['cupcakes'=>$cupcakes]);
+    }
+    public function show(int $cupcakeId)
+    {
+        $cupcakeProperties = $this->cupcakeManager->selectOneById($cupcakeId);
+        return $this->twig->render('Cupcake/show.html.twig', ['cupcakeProperties'=>$cupcakeProperties]);
     }
 }

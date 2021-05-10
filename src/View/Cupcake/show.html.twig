@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <ul>
+    {% for key,property in cupcakeProperties %}
+        <li>{{ key }}: {{ property}} </li>
+    {% endfor %}
+    </ul>
+{% endblock %}
+
+
+
