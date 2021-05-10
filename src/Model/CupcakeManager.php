@@ -20,4 +20,15 @@ class CupcakeManager extends AbstractManager
         $statement->execute();
         return (int)$this->pdo->lastInsertId();
     }
+    public function selectAll(string $orderBy = '', string $direction = 'ASC'): array
+    {
+        $query = 'SELECT c.id, c.name AS "cupcake_name", c.color1, c.color2, c.color3, c.created_at, a.name 
+                AS  "accessory_name" FROM cupcake c';
+        $query .= ' JOIN accessory a ON c.accessory_id = a.id';
+        if ($orderBy) {
+            $query .= ' ORDER BY ' . $orderBy . ' ' . $direction;
+        }
+
+        return $this->pdo->query($query)->fetchAll();
+    }
 }

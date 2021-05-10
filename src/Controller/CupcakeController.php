@@ -47,7 +47,7 @@ class CupcakeController extends AbstractController
      */
     public function list()
     {
-        //TODO Retrieve all cupcakes
-        return $this->twig->render('Cupcake/list.html.twig');
+        $cupcakes = $this->cupcakeManager->selectAll('id', 'DESC');
+        return $this->twig->render('Cupcake/list.html.twig', ['cupcakes'=>$cupcakes]);
     }
 }
