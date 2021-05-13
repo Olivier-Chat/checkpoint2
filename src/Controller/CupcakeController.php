@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\ColorGenerator;
 use App\Service\FormValidator;
 
 /**
@@ -53,6 +54,12 @@ class CupcakeController extends AbstractController
     public function show(int $cupcakeId)
     {
         $cupcakeProperties = $this->cupcakeManager->selectOneById($cupcakeId);
-        return $this->twig->render('Cupcake/show.html.twig', ['cupcakeProperties'=>$cupcakeProperties]);
+        $colors = [$cupcakeProperties['color1'], $cupcakeProperties['color2'], $cupcakeProperties['color3']];
+        $colorGenerator = new ColorGenerator();
+        $colorAverage = $colorGenerator->generateBackground($colors);
+        return $this->twig->render('Cupcake/show.html.twig', [
+            'cupcake'=>$cupcakeProperties,
+            'colorAverage'=>$colorAverage,
+            ]);
     }
 }

@@ -1,11 +1,17 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    <ul>
-    {% for key,property in cupcakeProperties %}
-        <li>{{ key }}: {{ property}} </li>
-    {% endfor %}
-    </ul>
+    <div class="main-container" style="background-color: {{ colorAverage }}">
+        <ul>
+        {% for key,property in cupcake %}
+            <li>{{ key }}: {{ property}}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="cupcake-item">
+            {% include 'Cupcake/_cupcake.html.twig' %}
+        </a>
+    </div>
 {% endblock %}
 
 
