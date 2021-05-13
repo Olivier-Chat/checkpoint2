@@ -7,8 +7,9 @@ class CupcakeManager extends AbstractManager
 {
     public const TABLE = 'cupcake';
     public const SELECT_QUERY = '
-                SELECT c.id, c.name AS "cupcake_name", c.color1, c.color2, c.color3, c.created_at, a.name 
-                AS  "accessory_name" FROM cupcake c
+                SELECT c.id AS "cupcake_id", c.name AS "cupcake_name", c.color1, c.color2, c.color3, c.created_at, 
+                a.id AS  "accessory_id" , a.name AS  "accessory_name", a.url 
+                FROM cupcake c
                 JOIN accessory a ON c.accessory_id = a.id';
 
     public function add(array $cupcakeProperties): int
@@ -31,7 +32,12 @@ class CupcakeManager extends AbstractManager
             $query .= ' ORDER BY ' . $orderBy . ' ' . $direction;
         }
 
-        return $this->pdo->query($query)->fetchAll();
+        $cupcakes =  $this->pdo->query($query)->fetchAll();
+        foreach ($cupcakes as $cupcake) {
+            $cupcake['cupcake_id'] = (int)$cupcake['cupcake_id'];
+            $cupcake['accessory_id'] = (int)$cupcake['accessory_id'];
+        }
+        return $cupcakes;
     }
     public function selectOneById(int $id)
     {
