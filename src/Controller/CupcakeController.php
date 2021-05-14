@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Model\CupcakeManager;
 use App\Service\ColorGenerator;
 use App\Service\FormValidator;
 
@@ -33,7 +34,8 @@ class CupcakeController extends AbstractController
             $formValidator->checkInt('accessory');
             $errors = $formValidator->getErrors();
             if (empty($errors)) {
-                var_dump($this->cupcakeManager->add($formValidator->getPost()));
+                $cupcakeManager = new CupcakeManager();
+                $cupcakeManager->add($formValidator->getPost());
                 header('Location:/cupcake/list');
             }
         }
@@ -49,6 +51,7 @@ class CupcakeController extends AbstractController
     public function list()
     {
         $cupcakes = $this->cupcakeManager->selectAll('cupcake_id', 'DESC');
+        $_SESSION['lastCupcake'] = $cupcakes[0];
         return $this->twig->render('Cupcake/list.html.twig', ['cupcakes'=>$cupcakes]);
     }
     public function show(int $cupcakeId)
@@ -57,9 +60,11 @@ class CupcakeController extends AbstractController
         $colors = [$cupcakeProperties['color1'], $cupcakeProperties['color2'], $cupcakeProperties['color3']];
         $colorGenerator = new ColorGenerator();
         $colorAverage = $colorGenerator->generateBackground($colors);
+        $invertColor = $colorGenerator->invertColor($colorAverage);
         return $this->twig->render('Cupcake/show.html.twig', [
             'cupcake'=>$cupcakeProperties,
             'colorAverage'=>$colorAverage,
+            'invertColor'=>$invertColor
             ]);
     }
 }

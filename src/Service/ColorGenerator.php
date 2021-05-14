@@ -18,6 +18,8 @@ class ColorGenerator
         foreach ($averagesHexa as $average) {
             if (strlen($average) < 2) {
                 $tempArray2 []= "0" . $average;
+            } else {
+                $tempArray2 [] = $average;
             }
         }
         return "#" . implode("", $tempArray2);
@@ -45,5 +47,13 @@ class ColorGenerator
         }
         $length = count($colors);
         return [round($sumOfRed/$length), round($sumOfGreen/$length), round($sumOfBlue/$length)];
+    }
+    public function invertColor(string $color): string
+    {
+        $tempColors = array_map(function (string $primary): int {
+            return 255-hexdec($primary);
+        }, $this->extractHexadecimalsFromColor($color));
+        $tempColors = array_map('dechex', $tempColors);
+        return '#' . implode("", $tempColors);
     }
 }

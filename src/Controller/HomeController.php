@@ -21,6 +21,10 @@ class HomeController extends AbstractController
      */
     public function index()
     {
-        return $this->twig->render('Home/index.html.twig');
+        $transmitToView = [];
+        if (isset($_SESSION['lastCupcake'])) {
+            $transmitToView = ['cupcake'=>$_SESSION['lastCupcake']];
+        }
+        return $this->twig->render('Home/index.html.twig', $transmitToView);
     }
 }

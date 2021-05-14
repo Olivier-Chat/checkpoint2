@@ -2,6 +2,7 @@
 
 {% block content %}
     <div class="main-container" style="background-color: {{ colorAverage }}">
+        <h1 style="color: {{ invertColor }}"> {{ cupcake.cupcake_name }} </h1>
         <ul>
         {% for key,property in cupcake %}
             <li>{{ key }}: {{ property}}</li>
